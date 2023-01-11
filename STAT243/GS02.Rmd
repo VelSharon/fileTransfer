@@ -1,0 +1,183 @@
+---
+title: "Stat 243 -- Homework 2"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE, message=FALSE}
+# load packages that are going to be used
+require(mosaic)      # this loads ggformula (for plotting), etc. too
+require(Lock5withR)  # this loads data sets from our book
+
+# Some customization. You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw())     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small")   # slightly smaller font for code
+```
+
+<!-- Put your work below here.  Put text in text chunks, code in R chunks. -->
+
+Section 1.3
+
+1.80 Experimental  
+
+1.84 The speed of the vehicle could as a confounding variable since the speed could also influence the accidents caused. 
+     
+1.88 It could provide evidence of that claim but perhaps with more variables that could help us better understand the relation between beer consumption and loud music. For example, loud music could be linked to people feeling more elated, thus making them drink more. So perhaps measuring emotion levels could help in understanding this relation better. 
+
+1.92 
+(a) Randomization could be used while assigning participants to their treatment. In this case, randomization could be applied while assigning the participants to their different treatments. 
+
+(b) The participants could be given a fake pill (not Prozac). 
+
+(c) This experiment could be made double blind by not letting the researchers (those administering the treatment) and the participants know about the pill they are given/being given. 
+
+1.94
+(a) Randomization could be applied while assigning the athletes randomly into groups (perhaps those told to eat lots of carbs while others on a normal diet) for their treatment and then measure their performance. 
+
+(b) Each athelete can be grouped based on their age or gender and then one set of athletes will be given more carbs and the other set, a normal diet. 
+
+(c) I think a matched pairs design would be better suited since the same variable (measure of performance) would be measured on the same experimental units (atheletes).
+
+Section 2.4 
+
+2.132 
+(a) Largest: Action
+    Smallest: Horror
+    
+(b) Biggest: Action
+    Smallest: Drama
+    
+(c) No. An association cannot be determined between the genre and budget since genre is a categorical variable.  
+
+2.136
+(a) Median for NL = 1400
+(b) Median for AL = 1450
+Difference = 50 
+
+(b) The number of hits by the AL are much larger than the number of hits by the NL. While the boxplot for NL is almost symmetric but the boxplot for AL is not so much. The spread of AL is much bigger than that of the NL. 
+
+2.144 
+(a) Explanatory: Traffic Lights (categorical - system of lights )
+Response: Traffic flow (quantitative - time )
+
+(b)
+```{r b}
+mean(~Timed, data=TrafficFlow)
+
+mean(~Flexible, data=TrafficFlow)
+```
+Yes the flexible system seems to reduce the delay time. 
+
+(c) 
+```{r c}
+mean (~Difference, data=TrafficFlow)
+
+sd(~Difference, data=TrafficFlow)
+```
+(d) 
+```{r boxplot}
+gf_boxplot(~Difference, data=TrafficFlow)
+```
+Yes there are some high outliers. 
+
+Section 2.5
+2.158 Negative association since the more distance is driven, the lower the amount of gas in the tank. 
+
+2.160 Positive association since number of text messages sent will be almost equal to the number of text messages received. 
+
+2.168 
+(a) A positive association could mean that, more the height, more is the weight of the student. A negative association could mean that there is a decrease in weight with the increase in height. It is more likely that there is a positive association between the variables. 
+
+(b) There seems to be a positive association between the variables. The trend seems to be quite strong for most of the points except for a few outliers. Yes, we can say it is almost linear. 
+
+(c) That person seems to be 83 inches in height but has a weight a little less than 150 pounds. 
+
+2.170 
+(a) Positively associated since the more maternal care children receives, the larger the area of the hippocampus. 
+
+(b) Positively associated since the larger the size of the hippocampus, the more resilience there is. 
+
+(c) A randomized experiment could be conducted by taking two groups of mother and children, of which in one group, the mother would be asked to nurture her child more, whereas in the other group, the mother will be asked to nurture the child as she normally would. I do not think this experiment is ethical because a mother's love should never be measured, only because each mother shows her love and nurture in her own unique way. 
+
+(d) I think I will be able to answer this question based on the evidence of the experiments. Things like the duration of the experiments, the experimental units, etc, all matter in this regard. 
+
+2.180 
+(a) A positive association would mean that the faster the internet connection, the more hours are spent online. It would make sense here because given fast internet, people could shop online, make phonecalls or videocalls, or just browse through social media because in today's world, everything is digital and digitization requires an internet connection. 
+
+(b) A negative association could mean that the more people spend time online, the lower the speed of the internet. This could make sense in a way that the more people spend time online, the internet connection could slow down because of the heavy usage, thereby decreasing its speed. 
+
+(c)
+```{r Internet}
+gf_point(HoursOnline~PercentFastConnection, data=GlobalInternet)
+```
+There seems to be a positive association with a high outlier. This outlier is that of Switzerland where it has 88% fast internet connection but it has the least amount of hours spent. Hence, it became an outlier. 
+
+(d) Once we eliminate the outlier, there is a positive association between the variables. 
+
+(e) 
+```{r cor}
+cor(HoursOnline~PercentFastConnection, data=GlobalInternet)
+```
+It seems to have a strong linear relationship because it is farther away from 0. 
+
+(f) Given the data, yes we can conclude that the faster connection speed causes people to spend more time online. However, maybe adding a few more countries to our dataset could help us come to a stronger conclusion. 
+
+Section 2.6
+
+2.196
+(a) Explanatory: Distance
+    Response: Duration of dance 
+    
+(b) Yes there appears to be a linear trend among the data and it is a positive association because there is an increase in duration with increase in distance. 
+
+(c) 
+```{r bees}
+cor(Distance~Duration, data=HoneybeeWaggle)
+```
+
+(d)
+```{r bee}
+gf_point(Distance~Duration, data=HoneybeeWaggle) %>%
+  gf_lm()
+```
+```{r}
+lm(formula = Distance~Duration, data=HoneybeeWaggle)
+```
+
+
+(f) 1 second would be for a distance of around 1000 and 3 seconds would be for a distance of around 3000
+
+2.202 
+(a) The one using abdomen since the data points are closer to the regression line
+
+(b) Actual: 35
+Predicated: 40
+
+(c) Abdomen circumference: 110
+Residual: 125 - 110 = 15 
+
+
+2.208 
+(a) & (b) & (c)
+```{r happy}
+gf_point(Happiness~LifeExpectancy, data=HappyPlanetIndex) %>% gf_lm()
+```
+```{r}
+lm(formula = Happiness~LifeExpectancy, data=HappyPlanetIndex)
+```
+
+The slope can be interpreted as the change in value of the y-axis when the x-axis changes. So, in this case, an increasing life expectancy lends to an increase in the happiness rating. 

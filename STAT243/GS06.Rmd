@@ -1,0 +1,304 @@
+---
+title: "Stat 243 -- GS06"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE, message=FALSE}
+# load packages that are going to be used
+require(mosaic)      # this loads ggformula (for plotting), etc. too
+require(Lock5withR)  # this loads data sets from our book
+
+# Some customization. You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw())     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small")   # slightly smaller font for code
+```
+
+**Problem 9.10**
+
+```{r}
+tstar <- qt(0.975, df = 30-2)
+result <- (-0.3560) + c(-1, 1) * tstar * 0.2007
+result 
+```
+We are 95% sure that the true slope is somewhere between -0.767 and 0.055. 
+
+**Problem 9.14** 
+
+$$ H_0: p = 0 \mbox{ vs.} H_a: p\ne 0$$
+```{r}
+r = -0.41
+n = 18
+t = (r * sqrt(n-2))/(sqrt(1-r^2))
+pvalue = pt(t, df = n-2)
+pvalue
+```
+Since the p-value is small at a 5% significance level, there is strong evidence of a negative association. 
+
+
+**Problem 9.16**
+
+(a) Steals and Points are the most strongly positively correlated variables. The correlation is 0.453 and the p-value is 0. A positive correlation in this situation means that as the number of steals for the season increase or decrease, the number of points for the season per game also increases or decreases respectively and vice-versa. 
+
+(b) Rebounds and FTPct are the most strongly negatively correlated variables. The correlation is -0.384 and the pvalue is 0. A negative correlation in this situation means an increase or decrease in number of rebounds decreases or increases the free throw shooting percentage respectively and vice-versa.  
+
+(c) (Points, Age)
+    (FTPct, Age)
+    (Rebounds, Age)
+    (Steals, Age)
+    (Steals, Rebounds)
+    
+**Problem 9.18**
+
+(a) To determine this, we look at the following aspects of the plot
+    1. The points seem to be following a good enough linear trend and do not show          any obvious increasing non-linear curvature. 
+    2. The data does not display a huge increase in variability with increasing            values. 
+    3. There are 3 obvious outliers I could notice but they do not seem to very far        from the data so they can be considered as part of the data pattern. 
+
+Therefore, this data can be used as a linear model since no conditions are violated.
+
+(b) The correlation is 0.740. The pvalue is 0 so there is strong evidence of a positive correlation between body mass gain and percent of calories eaten during the day. 
+
+(c) BMGain = 1.11 + 0.127*DayPct
+BMGain(DayPct = 50) = 1.11 + 0.127*50 = 7.46
+
+(d) The estimated slope is 0.12727. This means that there is an 0.12727 increase in body mass for every additional percent of calorie eaten during the day. 
+
+(e) The p-value is 0 and since it is smaller than any significance level, we reject the null hypothesis in favor of the alternative. It means that we have strong evidence that the percent of calories eaten during the day is an effective predictor of the body mass gain for mice. 
+
+(f) The t-test for slope and correlation both give the exact same p-value result. The t-test for a slope using regression output and t-test for correlation requires knowing the correlation coefficient and sample size. 
+
+(g) The coefficient of determination is 54.7% which means that percentage of calories eaten during the day gives 54.7% variability in the body mass gain of these mice. 
+
+(h) r = 0.740
+    r^2 = 0.740*0.740 = 0.5476 = R^2
+    Hence proved
+    
+**Problem 9.20**
+
+(a) Slope = 82.45
+    Standard Error = 27.58
+    
+(b) $$t = (b_1 - 0)/SE = 82.45/27.58 = 2.989 $$
+
+$$H_0: \mbox{Model is ineffective}\\(beta_1 = 0) $$
+$$H_0: \mbox{Model is effective}\\(beta_1\ne 0) $$
+```{r}
+pvalue <- 2*(1-pt(2.989, df = 38))
+pvalue
+```
+
+Since the p-value is very small, we have strong evidence that GMdensity is an effective predictor of FBfriends. 
+
+The calculated test statistic 2.989 is similar to 2.99 and slope 0.00489 is similar to 0.005 in the given computer output. 
+
+```{r}
+beta1 <- 82.45
+SE <- 27.58
+tstar <- qt(0.975, df = 38)
+interval <- beta1 + c(-1, 1)*tstar*SE
+interval
+```
+We are 95% sure that the increase in FBFriends for every extra GMdensity score (slope) is somewhere between 26.6 and 138.28. 
+
+**Problem 9.23**
+
+(a) Coefficient of determination (R^2)
+
+(b) Response Variable - Prevalence of Virus
+    Explanatory Variable - Precipitation 
+
+(c) The correlation is $$\sqrt(0.79) = 0.889$$  
+
+**Problem 9.28**
+
+$$ H_0: \mbox{The model is ineffective } (\beta_1 = 0)$$
+$$ H_a: \mbox{The model is effective }  (\beta_1\ne 0) $$
+F statistic = 1.75
+p-value= 0.187 
+
+The model is not effective. Since the p-value is large, we fail to reject the null hypothesis which we means that we do not have convincing evidence in favor of the alternative. 
+
+**Problem 9.34**
+
+Sample size = Total(Df) + 1 = 360 + 1 = 361
+R^2 = Sum Sq(ModelA)/Sum Sq(Total) = 352.97/11864.2 = 0.0298
+
+**Problem 9.36**
+
+df(Model) = 1
+df(Error) = n - 2 = 100 - 2 = 98
+Total = n - 1 = 100 - 1 = 99
+
+SS(Model) = 250
+SS(Error) = SSTotal - SSModel = 3000-250 = 2750
+SS(Total) = 3000
+
+MS(Model) = SSModel/df(Model) = 250/1 = 250
+MS(Error) = SSError/(n-2) = 2750/98 = 28.061
+
+F-statistic = MSModel/MSE = 250/28.061 = 8.909
+
+p-value
+```{r}
+1-pf(8.909, df1 = 1, df2 = 98)
+```
+**Problem 9.38**
+
+df(Model) = 1
+df(Error) = n - 2 = 25 - 2 = 23
+Total = n - 1 = 25 - 1 = 24
+
+SS(Model) = 8.5
+SS(Error) = 247.2
+SS(Total) = SSModel + SSError = 8.5 + 247.2 = 255.7
+
+MS(Model) = SSModel/df(Model) = 8.5/1 = 8.5
+MS(Error) = SSError/(n-2) = 247.2/23 = 10.7478
+
+F-statistic = MSModel/MSE = 8.5/10.7478 = 0.791
+
+p-value
+```{r}
+1-pf(0.791, df1 = 1, df2 = 23)
+```
+**Problem 9.41**
+
+f-statistic = 7.44
+p-value = 0.011
+
+Since the p-value is small (at a significance level of 2% and above), we can reject the null hypothesis which means that the model is effective at predicting the number of calories in a cup of these 30 breakfast cereals based on the number of grams of fiber. 
+
+**Problem 9.43**
+
+(a) GPA(VerbalSAT = 550) = 2.03 + 0.00189*(550) = 3.0695
+(b) n = Total + 1 = 344 + 1 = 345
+(c) R^2 = SSRegression/SST = 6.8029/54.5788 = 0.1246
+(d) Since the p-value is 0, we can reject the null hypothesis which means that the model is effective in predicting GPA based on verbal SAT score. 
+
+**Problem 9.52**
+
+(a) 
+```{r}
+summary(lm(Beds ~ Baths, data = HomesForSaleCA))
+```
+
+Regression Equation
+$$Beds = 0.7465\times\mbox{Baths} + 1.3671 $$
+
+$$Beds(Baths = 3) = 0.7465*3 + 1.3671 = 3.6066 $$
+(b) t = 6.385
+p-value = 6.531e-07 
+
+Since the p-value is very small, we can reject the null hypothesis which means that the model is effective. Therefore, number of bathrooms is an effective predictor of number of beds in these 30 houses of California.
+
+(c) 
+```{r}
+anova(lm(Beds ~ Baths, data = HomesForSaleCA))
+```
+
+f-statistic = 40.772
+p-value = 6.531e-07
+
+Since the p-value is very small, we can reject the null hypothesis which means that the model is effective. Therefore, number of bathrooms is an effective predictor of number of beds in these 30 houses of California.
+
+(d)
+```{r}
+summary(lm(Beds ~ Baths, data = HomesForSaleCA))
+```
+R^2 = 0.5929
+
+The number of bathrooms explains 59.3% of the variability in number of beds for these 30 houses in California.  
+
+**Problem 9.62**
+
+(a) CI = (143.35, 172.42)
+We are 95% sure that the mean number of calories for 16 grams of sugar in cereals is somewhere between 143.35 and 172.42
+
+PI = (101.46, 214.31)
+We are 95% sure that the number of calories for a specific cereal of 16 grams of sugar will be between 101.46 and 214.31. 
+
+**Problem 9.63**
+
+(a)
+$$ H_0: \mbox{The model is ineffective } (\beta_1 = 0)$$
+$$ H_a: \mbox{The model is effective }  (\beta_1\ne 0) $$
+```{r}
+anova(lm(Price ~ Size, data = HomesForSaleNY))
+```
+
+p-value = 3.25e-08
+
+Since the p-value is very small, we reject the null hypothesis which means that the model is effective. This means that square footage is an effective predictor of price for houses in New York. 
+
+(b) 
+```{r}
+summary(lm(Price ~Size, data = HomesForSaleNY))
+```
+Regression equation: $$ \widehat{Price} = 470.77\times\mbox{Size} - 369.63 $$
+Price (Size = 2) = 470.77*2 - 369.63 = $571,910
+
+(c) 
+```{r}
+lmResult <- lm(Price ~ Size, data = HomesForSaleNY)
+housePriceEstimator <- makeFun(lmResult)
+
+housePriceEstimator(Size = 2, interval="confidence", level=0.9)
+```
+We are 90% sure that the mean price of all 2000-square-foot New York homes is somewhere between 445.3 and 698.6 (in $1000s)
+
+(d) 
+```{r}
+lmResult <- lm(Price ~ Size, data = HomesForSaleNY)
+housePriceEstimator <- makeFun(lmResult)
+
+housePriceEstimator(Size = 2, interval="prediction", level=0.9)
+```
+We are 90% sure that the price of a specific 2000-square-foot New York home is somewhere between -133.2 and 1277.0 (in $1000s)
+
+9.66
+(a) 
+CI = $$\widehat{y} +/- tstar\times\mbox{S}\sqrt((1/n) + [(x - xbar)^2/((n-1)*sd^2)]) $$
+
+
+```{r}
+pointEst <- (-36.5) + (0.836*50)
+n <- 11
+tstar <- qt(0.975, df = n-2) 
+S = 5.95019
+term1 <- (50 - 53.18)^2 #50 is x* and 53.18 is the mean
+term2 <- (n-1)*((11.54)^2) #11.54 is the standard deviation
+
+result <- pointEst + c(-1, 1) * tstar * S * sqrt((1/n)+(term1/term2))
+result
+```
+We are 95% sure that the mean margin of victory for all presidents with an approval of 50 is somewhere between 1.0755 and 9.5245
+
+(b) 
+```{r}
+pointEst <- (-36.5) + (0.836*50)
+n <- 11
+tstar <- qt(0.975, df = n-2) 
+S = 5.95019
+term1 <- (50 - 53.18)^2 #50 is x* and 53.18 is the mean
+term2 <- (n-1)*((11.54)^2) #11.54 is the standard deviation
+
+result <- pointEst + c(-1, 1) * tstar * S * sqrt((1)+(1/n)+(term1/term2))
+result
+tstar
+```
+We are 95% sure that the mean margin for a specific president with an approval of 50% will be between -8.808 and 19.408

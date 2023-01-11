@@ -1,0 +1,136 @@
+---
+title: "Stat 245 -- GAM "
+author: "John, James, Hong Gi, Chaeyoung, Gloria"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE}
+# load packages that are going to be used
+require(tidyverse)   # this loads mosaic, ggformula, etc. too
+require(ggformula)
+require(mosaic)
+library(mgcv)
+library(ggeffects)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw(base_size=12))     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  echo = TRUE,      # for homework, always show R code (this is the default)
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small",   # slightly smaller font for code
+  message = FALSE, warning = FALSE) # don't print warnings or messages in compiled document. So you MUST check them in RStudio!
+```
+
+
+
+
+
+```{r}
+zam <- read.table('https://raw.githubusercontent.com/cran/sdPrior/master/inst/examples/zambia_height92.raw',
+                 header=TRUE)
+names(zam) <- c('height_zscore', 'child_gender', 'breastf', 'child_age', 
+                'mother_birth_age', 'mother_height', 'mother_BMI',
+                'mother_education', 'mother_work', 'district', 'region', 'time')
+zam <- zam %>% mutate(child_gender = ifelse(child_gender==1, 'Male', 'Female')) %>%
+  mutate(mother_education = factor(mother_education)) %>%
+  mutate(mother_education = fct_recode(mother_education,
+                                       'None' = '1',
+                                       'Primary School' = '2',
+                                       'Secondary School' = '3',
+                                       'Higher Education' = '4')) %>%
+  mutate(mother_work = ifelse(mother_work==1, 'Working', 'Not Working')) %>%
+  mutate(region = factor(region)) %>%
+  mutate(region = fct_recode(region,
+                             'Central' = '1',
+                             'Copperbelt' = '2',
+                             'Eastern' = '3',
+                             'Luapula' = '4',
+                             'Lusaka' = '5',
+                             'Northern' = '6',
+                             'Northwestern' = '7',
+                             'Southern' = '8',
+                             'Western' = '9')) %>%
+  mutate(district = factor(district)) %>%
+  dplyr::select(-time)
+zam <- arrange(zam, district)
+str(zam)
+```
+
+## Plan A Model
+
+Response Variable: height_zscore
+Predictor Variable(s): 
+
+How did you decide which predcitors required smooth terms? What smoothing basis will you use? What basis dimension k?
+
+
+#### Explore the data
+
+```{r}
+gf_point(height_zscore ~ mother_height, data = zam, alpha = 0.2)
+```
+```{r}
+gf_boxplot(height_zscore ~ mother_education, data = zam, alpha = 0.2)
+```
+
+```{r}
+gf_point(height_zscore ~ mother_BMI, data = zam, alpha = 0.2)
+```
+
+```{r}
+?choose.k
+
+```
+
+
+
+## Fit Regression Model
+
+```{r}
+zam.gam <- gam(height_zscore ~ s(mother_height, k = 5, bs = 'cs') +
+               mother_education +
+               s(mother_BMI, k = 5, bs = 'cs'),
+               data = zam,
+               method = 'ML',
+               select = TRUE)
+```
+
+## Summary
+
+```{r}
+summary(zam.gam)
+```
+
+
+## Prediction Plot
+
+```{r}
+spred <- ggpredict(zam.gam, terms = c('mother_height'))
+plot(spred)|> gf_labs(y = "Expected Height Zscore",
+                      x = "Mother's Height")
+```
+
+```{r}
+spred <- ggpredict(zam.gam, terms = c('mother_BMI'))
+plot(spred)
+```
+
+## Selection
+
+```{r}
+anova(zam.gam)
+```
+
+  

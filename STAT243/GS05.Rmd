@@ -1,0 +1,199 @@
+---
+title: "Stat 243 -- GS05"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE, message=FALSE}
+# load packages that are going to be used
+require(mosaic)      # this loads ggformula (for plotting), etc. too
+require(Lock5withR)  # this loads data sets from our book
+
+# Some customization. You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw())     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small")   # slightly smaller font for code
+```
+
+<!-- Put your work below here.  Put text in text chunks, code in R chunks. -->
+
+
+8.8
+
+df(Groups) = k - 1 = 4 - 1 = 3
+
+df(Errors) = (n1 + n2 + n3 + n4) - k = (10*4) - 4 = 40 - 4 = 36
+
+Total = n - 1 = (10*4) - 1 = 39
+
+MSG = SSG/(k-1) = 960/3 = 320
+
+MSE = SSE/(n-k) = 5760/36 = 160
+
+F-statistic = MSG/MSE = 320/160 = 2
+
+
+8.10
+
+df(Groups) = k - 1 = 4 - 1 = 3
+
+df(Errors) = (n1 + n2 + n3 + n4) - k = (5+8+7+5) - 4 = 25 - 4 = 21
+Total = n - 1 = 25 - 1 = 24
+
+SSG = Total - SSE = 1400 - 800 = 600
+
+MSG = SSG/(k-1) = 600/3 = 200
+
+MSE = SSE/(n-k) = 800/21 = 38.0952
+
+F-statistic = MSG/MSE = 200/38.0952 = 5.25
+
+
+8.12
+
+(a) Number of groups = DF(Groups) + 1 = 4 + 1 = 5
+
+(b) H0 : $$\mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5$$
+    
+    Ha : At least one pair of population means is different
+    
+(c) pvalue 
+
+```{r}
+1 - pf(5.71, df1 = 4, df2 = 35)
+```
+(d) $$\alpha = 0.05$$
+Since $$pvalue < \alpha$$, we reject the null hypothesis which leads us to conclude that all the population means are not the same. 
+
+8.14
+
+(a) Number of groups = DF(Groups) + 1 = 3 + 1 = 4
+
+(b) H0 : $$\mu_1 = \mu_2 = \mu_3 = \mu_4$$
+    
+    Ha : At least one pair of population means is different 
+    
+(c) pvalue 
+
+```{r}
+1 - pf(0.75, df1 = 3, df2 = 16)
+```
+(d) $$\alpha = 0.05$$
+Since $$pvalue > \alpha$$, we fail to reject the null hypothesis which leads us to conclude that all the population means are the same. 
+
+8.16 
+
+(a)
+H0: The average number of correctly solved anagrams based on prior exposure to different colors are the same: $$\mu_R = \mu_G = \mu_B$$
+
+Ha: Atleast one pair of average number of correctly solved anagrams is different 
+
+(b) SSG = 27.7
+    SSE = 84.7 - 27.7 = 57.0
+    Total SS = 84.7
+    
+    df(G) = 3 - 1 = 2
+    df(E) = 71 - 3 = 69
+    
+    n = 19 + 27 + 25 = 71
+    
+    MSG = 27.7/2 = 13.85
+    MSE = 57/69 = 0.826
+    
+    Fstat = MSG/MSE = 16.77
+
+(c) pvalue    
+```{r}
+1-pf(16.77, df1 = 2, df2 = 69)
+```
+
+(d) Since the p value is approx 0, we reject the null hypothesis which means that the average number of correctly solved anagrams based on prior exposure to different colors are not the same. 
+
+
+8.24
+
+(a) Group LL gained the most weight on average
+    Group DM gained the least weight on average 
+    
+(b) Yes, since the standard deviations are not over 2:1 ratio of each other. 
+
+(c) z-score =  $$(x -\mu)/\sigma$$ = (17.4 - 11.010)/3 =  6.39/2.624 = 2.4352
+
+So yes, it is within +/- 3. Yes we can proceed with ANOVA. Moreover, the experimental trials were independent of each other. 
+
+(d) The cases are mice. Relevant variables are level of light and body mass of which we have mean and standard deviation. 
+
+(e) Body mass is quantitative (grams) and level of light is categorical 
+
+
+8.25
+
+(a) H0: The mean body mass of mice in three different light conditions is the same : $$\mu_{DM} = \mu_{LD} = \mu_{LL}$$
+
+Ha: At least one pair of mean body mass gain in three different light conditions is different
+
+(b) The F-statistic is 8.38 and the pvalue is 0.002. Since the pvalue is less than 0.05, we reject the null hypothesis which means that the mean body mass gain of mice in three different light conditions is not the same. 
+
+(c) Since we reject the null hypothesis, we reject the claim that there is no association between the two variables. So, yes, there is an association between body mass gain and light condition which means that mice gain most weight under the brightest light. 
+
+(d) Yes because the randomized experiment implies so. 
+
+8.26
+
+No there isn't a significant difference (SSG) 
+
+H0: The mean activity level in three different light conditions is the same : $$\mu_{DM} = \mu_{LD} = \mu_{LL}$$
+
+Ha: At least one pair of mean activity level in three different light conditions is different
+
+The F-statistic is 0.09 and the pvalue is 0.910 which is greater than 0.05 so we fail to reject the null hypothesis which leads us to conclude that the mean activity level of mice in three different light conditions is the same. 
+
+
+8.27
+
+(a) Since the standard deviations are more than 2:1 ratio of each other, we cannot conduct an ANOVA test. 
+
+(b) We fail to reject the null hypothesis which means that the average food consumption based on different levels of lighting is the same. 
+
+
+8.31
+
+They might be associated in a way that those who aim to be recipients of Olympic gold medals are probably athletes in which case their pulse rates are low. 
+
+```{r}
+anova(lm(Exercise~Award, data= StudentSurvey))
+```
+Since the standard deviations are with 2:1 ration of one another, we can proceed with another ANOVA test. 
+Since the pvalue is less than 0.05, we reject the null hypothesis which means that the difference in mean exercise amounts depending on award preference is not the same. 
+
+
+8.46
+
+```{r}
+TukeyHSD(Exercise~Award, data= StudentSurvey)
+```
+
+(a) Since the pvalue for Nobel-Academy is greater than 0.05, we fail to reject the null hypothesis which means that the mean pulse rates for Nobel awards and Academy awards are the the same. 
+
+(b) Since the pvalue for Olympic-Academy is less than 0.05, we reject the null hypothesis which means that the mean pulse rates for Olympic awards and Academy awards are not the same. 
+
+(c) Since the pvalue for Olympic-Nobel is less than 0.05, we reject the null hypothesis which means that the mean pulse rates for Olympic awards and Nobel awards are not the same.
+
+8.52
+
+```{r}
+TukeyHSD(GillRate~Calcium, data=FishGills3)
+```

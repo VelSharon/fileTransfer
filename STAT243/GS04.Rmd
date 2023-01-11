@@ -1,0 +1,193 @@
+---
+title: "Stat 243 -- GS04 "
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE, message=FALSE}
+# load packages that are going to be used
+require(mosaic)      # this loads ggformula (for plotting), etc. too
+require(Lock5withR)  # this loads data sets from our book
+
+# Some customization. You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw())     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small")   # slightly smaller font for code
+```
+
+<!-- Put your work below here.  Put text in text chunks, code in R chunks. -->
+Section 3.1
+
+3.14
+Population mean = 300 
+SE = 5 (approx)
+
+3.18
+(a) iii
+(b) i
+(c) ii
+
+3.23
+(a) Sample mean $\bar[x] = 27.9$
+    Population mean $\mu = 30$
+(b) Bell-shaped and centered at 30
+(c) 1000 dots where each represents a mean for n = 75
+
+3.24
+(a) B and C are biased because they are not centered at the mean of 2.61. Maybe the sampling for dotplot C was taken from a place with many single people. 
+(b) A matches with size n = 100 and D with n = 500
+
+Section 3.2
+3.42
+$\mu[1] - \mu[2] = 5+8 = 13$
+$\mu[1] - \mu[2] = 5-8 = -3$
+Interval = (-3, 13)
+
+3.51
+(a) Statistic; $\hat{p} = 0.30$
+(b) Proportion, p, of all US young people arrested
+    by 23; ˆp = 0.30
+(c) 0.29 to 0.31
+(d) Very unlikely
+
+3.52
+(a) Population is American adults above 18 years old 
+    Sample is 147,291 adults, aged 18 and over, living in the US
+    Parameter is proportion of American adults getting health insurance from an employer
+    Statistic is sample proportion of US adults getting their health insurance from an employer 
+(b) ME = 0.01
+[0.45-0.01, 0.45+0.01] = [0.44, 0.46]
+    
+3.53 Since there is a 95% confidence, we can say that the proportion of adults in the US who considered car a necessity lies between 0.83 - 0.89. 
+
+3.58
+(a) Matched pairs since it helps us control lurking variables such as age and gender
+(b) The difference of means of BPA levels
+(c) We are 95% confident that the true mean difference in BPA level lies between 19.6 to 25.5
+(d) Narrower
+
+3.60
+(a) 6.8 lbs
+(b) We can collect the population that overrears for a month and get the result after 2.5 years
+(c) (point estimation) +/- (z*)(SE) = 6.8 +/- (2)(1.2) => CI = (4.4, 9.2)
+(d) margin of error = (2)(SE) = 2.4. This means that 6.8 is 2.4 pounds within the true weight gain 
+
+3.64
+(a) This is wrong because the interpretation is not of all students but the population's mean 
+(b) This is wrong because the interpretation is not of a sample but a population
+(c) The population lies within the interval not goes from 65.5 to 71.8
+(d) This is wrong because the interpretation is not 100% sure but 95% sure of the mean between the CI
+(e) This is wrong because the interpretation is associated with students of all US colleges whereas it is simply about a certain college
+(f) 95% refers to the certainty not the percentage of values between the CI
+(g) 95% refers to the certainty not the percentage of sample between the CI
+
+Section 3.3
+3.66
+(a) Yes
+(b) Yes
+(c) Yes
+(d) No because 78 and 81 do not belong to the original sample 
+(e) Yes
+(f) Yes 
+
+3.75
+(a) 26/174 = 0.1494 is the best point estimate
+(b) SE = 0.028
+(c) 0.15 +/- (2)(0.028) => CI = (0.093, 0.205)
+(d) Yes because it falls between the CI
+
+3.76
+(a) mean = 34
+    sd = 13.684
+(b) You take a sample from the eight slips and then you resample from that sample 
+(c) Bell Shaped and centered at mean
+(d) Population parameter is the mean of population and point estimate is the bootstrap mean of the bootstrap sample 
+(e) 34 +/- (2)(4.85) => CI = (24.3, 43.7)
+
+3.78
+Sample mean = 605
+CI = (463.81, 746.19)
+We can say that we are 95% confident that the average monthly sales in the US lie between intervals (463.81, 746.19)
+
+3.81
+(a) 0.015
+(b) 0.1206, 0.1794
+This means that 95% of the time, the difference in proportion of teen and adult cell phone users who send/receive text messages lies between 0.1206 and 0.1794
+
+3.84
+```{r}
+mean(~Distance, data=CommuteAtlanta)
+sd(~Distance, data=CommuteAtlanta)
+
+bag <- do(1000) * mean(~Distance, data=resample(CommuteAtlanta))
+sd(~mean, data=bag)
+
+```
+(d) 18.156 +/- 2*(0.) => CI = (16.92659, 19.38541)
+
+Section 3.4
+
+3.89
+(a) 25 
+(b) 50 
+(c) 10 
+(d) 5
+
+3.90 A
+
+3.91 C
+
+3.92 C
+
+3.93 A
+
+3.94 B
+
+3.95 B
+
+3.100
+(a) 100.104
+(b) 100.104 +/- 3*4.798 = 
+
+3.102
+proportion = 753/1000
+z = 1.645*sqrt(0.753*(1-0.753)/1000) = [0.731, 0.775]
+
+3.105
+[24.69, 20.76]
+
+Section 6.1
+
+6.4
+mean = 0.27
+SE = sqrt(0.27(1-0.27)/30) = 0.0811
+
+6.10
+(a) mean = 0.69, sd = sqrt(0.69(1-0.69)/100) = 0.0463
+(b) mean = 0.69, sd = sqrt(0.69(1-0.69)/1000) = 0.0146
+(a) mean = 0.75, sd = sqrt(0.75(1-0.75)/100) = 0.0433
+(a) mean = 0.75, sd = sqrt(0.75(1-0.75)/1000) = 0.0137
+
+6.12
+sd(0.8) = 0.04, sd(0.5)=0.05, sd(0.3)=0.046, sd(0.1)=0.03
+The standard error is greatest for the proportion of P = 0.5
+
+6.16 
+(a) mean = 0.4, sd = sqrt(0.4*(1-0.4)/50) = 0.069
+
+6.18
+mean = 0.2, sd = sqrt(0.2*(1-0.2)/10) = 0.126
+mean = 0.2, sd = 0.1265

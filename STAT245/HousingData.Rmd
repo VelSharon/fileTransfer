@@ -1,0 +1,89 @@
+---
+title: "Stat 245 -- Michigan Housing"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE}
+# load packages that are going to be used
+require(tidyverse)   # this loads mosaic, ggformula, etc. too
+require(ggformula)
+require(mosaic)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw(base_size=12))     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  echo = TRUE,      # for homework, always show R code (this is the default)
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small",   # slightly smaller font for code
+  message = FALSE, warning = FALSE) # don't print warnings or messages in compiled document. So you MUST check them in RStudio!
+```
+
+## Read in Data
+```{r}
+hdma_mi_20 <- read_csv('https://sldr.netlify.app/data/hdma-mi-20.csv', show_col_types = FALSE)
+
+head(hdma_mi_20)
+```
+
+## Data Wrangling
+```{r}
+hdma_mi_20 <- hdma_mi_20 |>
+  mutate(action_taken = case_when(action_taken == 1 ~ 'Loan granted', action_taken == 3 ~ 'Loan denied' ))
+
+mosaic::tally(~action_taken, data = hdma_mi_20)
+```
+
+```{r}
+hdma_mi_20_sex <- hdma_mi_20 %>% 
+  filter(derived_sex %in% c("Male", "Female", "Joint", "Sex Not Available"))
+```
+
+
+## Calculate average denial rate for every sex
+```{r}
+hdma_mi_20_denied <- hdma_mi_20 |> 
+  group_by(derived_sex) |> 
+  mutate(rate_of_denial=paste0(round(count(action_taken=='Loan denied')/sum(action_taken=='Loan granted', action_taken=='Loan denied')*100))) %>%
+
+select("derived_sex", "rate_of_denial")
+
+glimpse(hdma_mi_20_denied)
+```
+
+```{r}
+unique(hdma_mi_20_denied$rate_of_denial)
+```
+
+## New Dataframe including only sex and denied numbers
+```{r}
+data <- data.frame(
+  sex = c("Male", "Female", "Joint", "Sex Not Available"), 
+  denied = c(8, 5, 9, 13)
+)
+```
+
+## Graph
+```{r}
+data %>%
+  ggplot() +
+  aes(y= sex, x = denied) + 
+  geom_col(position = "dodge") +
+  theme_minimal()
+```
+
+I attempted to recreate the line graph that shows the rate of denial in response to credit score by The Markup. But while going through the process, I wanted to show the rate of denial in response to credit score by sex. But I was not able to do all the calculations properly so my end result is basically a bar plot showing denied numbers by sex. Looks like those whose sex was not available were denied the most while females were denied the least. 
+
+  

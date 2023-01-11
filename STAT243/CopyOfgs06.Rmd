@@ -1,0 +1,189 @@
+---
+title: "Stat 243 -- GS06"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE, message=FALSE}
+# load packages that are going to be used
+require(mosaic)      # this loads ggformula (for plotting), etc. too
+require(Lock5withR)  # this loads data sets from our book
+
+# Some customization. You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw())     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small")   # slightly smaller font for code
+```
+
+9.10
+```{r}
+tstar <- qt(0.975, df = 30-2)
+result <- (-0.3560) + c(-1, 1) * tstar * 0.2007
+result 
+```
+9.14
+$$ H_0: p = 0 \mbox{ vs.} H_a: p\ne 0$$
+```{r}
+r = -0.41
+n = 18
+t = (r * sqrt(n-2))/(sqrt(1-r^2))
+pvalue = pt(t, df = n-2)
+pvalue
+```
+Since the pvalue is small, there is strong evidence of a negative association.
+
+9.16
+(a) Steals and Points are the most strongly positively correlated variables. The correlation is 0.453 and the pvalue is 0. A positive correlation in this situation means that as the number of steals for the season increase or decrease, the number of points for the season per game also increases or decreases respectively and vice-versa. 
+
+(b) Rebounds and Age are the most strongly negatively correlated variables. The correlation is -0.091 and the pvalue is 0.229. A negative correlation in this situation means that younger players have more number of rebounds while older players have less number of rebounds. 
+
+(c) (Points, Age)
+    (FTPct, Age)
+    (Rebounds, Points)
+    (Steals, Age)
+    (Steals, Rebounds)
+    
+9.18
+(a) We can see that .......
+
+(b) The correlation is 0.740. The pvalue is 0 so there is strong evidence of a positive correlation between body mass gain and percent of calories eaten during the day. 
+
+(c) BMGain = 1.11 + 0.127DayPct
+BMGain (DayPct = 50) = 1.11 + 0.127*50 = 7.46
+
+(d) The estimated slope is 0.12727. This means that there is an 0.12727 increase in body mass for every additional percent of calorie eaten during the day. 
+
+(e) The pvalue is 0 and since it is smaller than any significance level, we reject the null hypothesis in favor of the alternative. It means that we have strong evidence that the percent of calories eaten during the day is an effective predictor of the body mass gaun for mice. 
+
+(f) ........
+
+(g) The coefficient of determination is 54.7% which means that there is 54.7% variability in the body mass gain of these mice. 
+
+(h) r = 0.740
+    r^2 = 0.740*0.740 = 0.5476 = R^2
+    Hence proved
+    
+9.20
+(a) Slope = 82.45
+    Standard Error = 27.58
+    
+(b) $$t = (b_1 - 0)/SE = 82.45/27.58 = 2.989 $$
+
+$$H_0: \beta_1 = 0 $$
+$$H_0: \beta_1\ne 0 $$
+```{r}
+pvalue <- 2*(1-pt(2.989, df = 38))
+pvalue
+```
+
+Since the pvalue is very small, we have strong evidence that GMdensity is an effective predictor of FBfriends. 
+
+The calculated test statistic 2.989 is similar to 2.99 and slope 0.00489 is similar to 0.005 in the given computer output. 
+
+```{r}
+beta1 <- 82.45
+SE <- 27.58
+tstar <- qt(0.975, df = 38)
+interval <- beta1*c(-1, 1)*tstar*SE
+interval
+```
+9.23
+(a) Coefficient of determination (R^2)
+
+(b) Response Variable - Precipitation
+    Explanatory Variable - Prevalence of Virus 
+
+(c) The correlation is $$\sqrt(0.79) = 0.889$$  
+
+9.28
+$$ H_0: \mbox{The model is ineffective } (\beta_1 = 0)$$
+$$ H_a: \mbox{The model is effective }  (\beta_1\ne 0) $$
+F statistic = 1.75
+pvalue= 0.187 
+
+The model is not effective. Since the pvalue is large, we fail to reject the null hypothesis which we means that we do not have convincing evidence in favor of the alternative. 
+
+9.34
+Sample size = Total(Df) + 1 = 360 + 1 = 361
+R^2 = Sum Sq(ModelA)/Sum Sq(Total) = 352.97/11864.2 = 0.0298
+
+9.36 
+df(Model) = 1
+df(Error) = n - 2 = 100 - 2 = 98
+Total = n - 1 = 100 - 1 = 99
+
+SS(Model) = 250
+SS(Error) = SSTotal - SSModel = 3000-250 = 2750
+SS(Total) = 3000
+
+MS(Model) = SSModel/df(Model) = 250/1 = 250
+MS(Error) = SSError/(n-2) = 2750/98 = 28.061
+
+F-statistic = MSModel/MSE = 250/28.061 = 8.909
+
+p-value
+```{r}
+1-pf(8.909, df1 = 1, df2 = 98)
+```
+9.38
+df(Model) = 1
+df(Error) = n - 2 = 25 - 2 = 23
+Total = n - 1 = 25- 1 = 94
+
+SS(Model) = 8.5
+SS(Error) = 247.2
+SS(Total) = SSModel + SSError = 8.5 + 247.2
+
+MS(Model) = SSModel/df(Model) = 8.5/1 = 8.5
+MS(Error) = SSError/(n-2) = 247.2/23 = 10.7478
+
+F-statistic = MSModel/MSE = 8.5/10.7478 = 0.791
+
+p-value
+```{r}
+1-pf(0.791, df1 = 1, df2 = 23)
+```
+9.41
+f-statistic = 7.44
+p-value = 0.011
+
+Since the pvalue is small (at a significance level of 2%), we can reject the null hypothesis which means that the model is effective at predicting the number of calories in a cup of cereal based on the number of grams in fiber. 
+
+9.43
+(a) GPA(VerbalSAT = 550) = 3.0695
+(b) n = Total + 1 = 344 + 1 = 345
+(c) R^2 = SS(Regression)/SS(Total) = 6.8029/54.5788 = 0.1246
+(d) Since the pvalue is 0, we can reject the null hypothesis which means that the model is effective in predicting GPA based on verbal SAT score. 
+
+9.52
+(a) 
+```{r}
+summary(lm(Beds ~ Baths, data = HomesForSaleCA))
+```
+
+Regression Equation
+$$Beds = 0.7465\times\mbox{Baths} + 1.3671 $$
+$$Beds(Baths = 3) = 0.7465*3 + 1.3671 = 3.6066 $$
+(b) t = 6.385
+pvalue = 6.531e-07 
+
+Since the pvalue is very small, we can reject the null hypothesis which means that the model is effective in predicting the number of bedrooms in houses in California based on the number of bathrooms. 
+
+(c) 
+```{r}
+
+```
+

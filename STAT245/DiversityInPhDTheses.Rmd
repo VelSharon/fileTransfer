@@ -1,0 +1,44 @@
+---
+title: "Diversity in PhD Theses"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: pdf_document
+classoption: landscape
+header-includes:
+- \usepackage[fontsize=20pt]{scrextend}
+---
+
+```{r setup, include=FALSE}
+require(tidyverse)
+require(mosaic)
+require(ggformula)
+knitr::opts_chunk$set(echo = TRUE,
+                      error = TRUE,
+                      fig.width = 7, 
+                      fig.height = 4)
+
+theme_set(theme_minimal(base_size = 16))
+```
+
+
+<!-- Put your work below here.  Put text in text chunks, code in R chunks. -->
+
+## Data
+
+```{r}
+pi <- read_csv('https://sldr.netlify.app/data/phd_innovation.csv')
+
+pi
+```
+
+```{r}
+gf_histogram(~ uptake, fill = ~ race_ethnicity, bins = 15, data = pi)
+```
+
+I chose a histogram because I wanted to visualize both the categorical variable race_ethnicity and the quantitative variable uptake. We can see that up till a certain point, the increase in uptake shows an increase in the count of different ethnicity groups. However, after that point, increasing uptake shows a decrease in the count of the ethnicity groups. Just by observation, it looks like most people experience an uptake between 1 and 1.5, with the Asians experiencing it the most. 
+
+
+
+
+
+  

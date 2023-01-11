@@ -1,0 +1,170 @@
+---
+title: "Stat 245 -- Test1"
+author: "Sharon Evangeline Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE}
+# load packages that are going to be used
+require(tidyverse)   # this loads mosaic, ggformula, etc. too
+require(ggformula)
+require(mosaic)
+require(MuMIn)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw(base_size=12))     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  echo = TRUE,      # for homework, always show R code (this is the default)
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small",   # slightly smaller font for code
+  message = FALSE, warning = FALSE) # don't print warnings or messages in compiled document. So you MUST check them in RStudio!
+```
+
+### Revised Sections 
+
+I have added revisions under the headers "Revised" 
+
+1. Data Exploration: Graphic 
+
+2. Interpretation/Conclusion: Answer to research question
+
+### Read Data 
+```{r}
+testDataSet <- read_csv("https://sldr.netlify.app/data/TGS.csv")
+
+glimpse(testDataSet)
+```
+
+
+### Research Question 
+Is there an association between a person’s total cholesterol and their activity level?
+
+
+### Plan
+My response variable is total_cholesterol and low_activity is one of the predictor variables. After reading the paper from which the data has been given along with a little background research, I was able to say that a person's lifestyle (active, sedentary, etc) could affect what goes in that person's body, in our case, the cholesterol levels. Furthermore, I have chosen glycemic category, smoking and lipid lowering meds to act as predictor variables along with low_activity. Levels of blood glucose, whether a person smokes or not along with whether they administer cholesterol medication can affect the cholesterol levels of a person. The number of predictors I have are 4 which is well within the rules of choosing predictors for the size of the given dataset, where the number of observations (7718) is more than 15 times larger than the number of predictors (4). 
+
+
+### Graphics 
+```{r}
+gf_boxplot(total_cholesterol ~ low_activity, data = testDataSet, 
+  xlab = 'Low Activity?', 
+  ylab = 'Total Cholesterol', 
+  title = "Total Cholesterol by Levels of Physical Activity")
+```
+
+## Revised 
+
+```{r}
+gf_boxplot(total_cholesterol ~ low_activity, data = testDataSet, 
+  xlab = 'Low Activity?', 
+  ylab = 'Total Cholesterol', 
+  title = "Total Cholesterol by Physical Activity")
+```
+
+I have made a boxplot to show any potential association between total cholesterol and low_activity. But as we can see, there is barely any difference between those who are less active and those who are not less active. This tells me that, for this particular dataset, low/high levels of physical activity does not seem to be affecting the cholesterol levels of an individual. This leads me to explore the association further with other predictors. 
+
+
+### Model Fitting
+```{r}
+mlr <- lm(total_cholesterol ~ low_activity + glycemic_category + smoking + lipid_lowering_meds, data = testDataSet)
+
+summary(mlr)
+```
+
+
+Model Equation: total_cholesterol = 5.016 + (-0.019)$I_{lowactivity}$ + (-0.149)$I_{glycemiccategory}$ + (0.108)$I_{smoking}$ + 0.005$I_{lipidmeds}$ + $\epsilon$
+
+
+Where:
+• $I_{lowactivity}$ is an indicator variable that is 0 when low_activity is "no", and 1 when it is "yes"
+• $I_{glycemiccategory}$ is an indicator variable with value 1 if category is "NFG/NGT", and 0 otherwise
+• $I_{smoking}$ is an indicator variable with value 1 if smoking is "Past", and 0 otherwise
+• $I_{lipidmeds}$ is an indicator variable with value 1 if "yes", and 0 otherwise
+• $\epsilon$ ∼ N(0, 0.9629) 
+
+
+The adjusted $R^2$ value of this model is 0.02326, which means that all the predictors combine to explain less than 1% of the variance in total_cholesterol. In other words, most of the variation in cholesterol remains unexplained, leaving a lot of uncertainty in whether activity affects cholesterol. This suggests that there must be a weak linear relationship between total cholesterol and the predictors, low activity, glycemic categories, smoking history and cholesterol medication. 
+
+
+### Assessment: Residuals vs Fitted
+
+```{r}
+resDataSet <- testDataSet |>
+mutate(res = resid(mlr),
+fitted = predict(mlr))
+gf_point(res ~ fitted, data = resDataSet) |>
+gf_labs(x = 'Fitted Values', y = 'Residuals')
+```
+
+In a residuals vs fitted plot, we check the linearity of the predictor-response variables relationship. In this case, there is no clear linear trend, rather the residuals seem to be spread in non-random ways which violates the condition of the plot. This leads us to conclude that there may not be a linear relationship between the response and predictor variables. 
+
+
+### Assessment: ACF Plot
+
+```{r}
+s245::gf_acf(~mlr)
+```
+
+Here we use an ACF plot to check for independence of residuals. There is no ACF value that exceeds the confidence bounds, so from this plot, there is no evidence of non-independence in the residuals.  
+
+
+```{r}
+gf_histogram(~res, data = resDataSet)
+```
+
+Here we check for the normality of residuals. Our histogram has a unimodal distribution and follows a normal distribution curve which means that most of our fitted values are close to our actual values. 
+
+
+### Interpretation
+
+Here I am creating a new prediction data by holding all my predictor variables constant except for the low_activity variable which varies between 'yes' and 'no.' I've chosen the group of individuals with active cholesterol medication, having diabetes and with a history of smoking. 
+
+
+```{r}
+fake_data <- expand.grid(lipid_lowering_meds = 'Yes',
+                         glycemic_category = 'Diabetes mellitus',
+                         smoking = 'Past',
+                         low_activity = c('Yes', 'No'))
+preds <- predict(mlr,
+                 newdata = fake_data,
+                 se.fit = TRUE)
+glimpse(preds)
+```
+
+
+```{r}
+fake_data <- fake_data |>
+  mutate(pred = preds$fit,
+         pred.se = preds$se.fit,
+         CI_lower = pred - 1.96*pred.se,
+         CI_upper = pred + 1.96*pred.se)
+glimpse(fake_data)
+```
+
+```{r}
+gf_point(pred ~ low_activity,
+        data = fake_data) |>
+  gf_labs(x = 'Low Activity?', y = 'Total Cholesterol\n According to Model') |>
+  gf_errorbar(CI_lower + CI_upper ~ low_activity)
+```
+
+From our prediction plot, we can see that there is an increase in cholesterol levels for those who are not less active, there is a wide overlap between the two categories of low activity. This suggests that there isn't a definite difference between these categories. Furthermore, our linearity test failed and our adjusted $R^2$ value also implied that there may be a weak relationship between the response and predictor. Therefore, we are now able to arrive to a conclusion that levels of physical activity and total cholesterol are not associated, given this particular dataset. It seems impossible to apply a linear regression model in this case and perhaps, other models should be considered.  
+
+### Revised Explanation 
+
+Ideally, from our prediction plot, we can see that there is an increase in cholesterol levels for those who are not less active, there is a wide overlap between the two categories of low activity. This suggests that there isn't a definite difference between these categories. However, our model failed the linearity test and our adjusted $R^2$ value also implied that there may be a weak relationship between the response and predictor because of which we cannot conclude an answer to our research question. It seems impossible to apply a linear regression model in this case and perhaps, other models should be considered.  
+
+
+  

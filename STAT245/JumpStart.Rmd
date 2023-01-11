@@ -1,0 +1,47 @@
+---
+title: "Stat 245 -- RRStudio-Jump Start"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: pdf_document
+classoption: landscape
+header-includes:
+- \usepackage[fontsize=20pt]{scrextend}
+---
+
+```{r setup, include=FALSE}
+require(tidyverse)
+require(mosaic)
+require(ggformula)
+knitr::opts_chunk$set(echo = TRUE,
+                      error = TRUE,
+                      fig.width = 7, 
+                      fig.height = 4)
+
+theme_set(theme_minimal(base_size = 16))
+```
+
+
+<!-- Put your work below here.  Put text in text chunks, code in R chunks. -->
+
+## Read in Data 
+
+```{r}
+wrdata <- 
+  readr::read_csv('https://sldr.netlify.app/data/sustainable-livelihoods.csv', 
+                  show_col_types = FALSE)
+
+gf_percents(~ Leadership_Program, fill = ~ Management_Confidence, 
+            data = wrdata, na.rm = TRUE)
+```
+
+### Question
+
+How did participation in the Leadership program affect the management confidence?
+
+I chose a bar graph because Management_Confidence and Leadership_Program are categorical variables. I wanted to visualize the difference in the percentage of people's participation in the Leadership progam. Since there is a visible difference in the percentage, a bar graph was my first choice. Furthermore, I made it a stacked bar graph to show the difference in Management_Confidence within those who participated in the leadership program and those who didn't. A stacked bar graph makes it easier to estimate the percentage within a category. 
+
+We can see that those who participated in the leadership program had more management confidence than those who didn't participate. 
+
+
+I think I could use a pie graph to visualize these variables. The percentage of those who participated in the leadership program and those who did not, adds up to 100% and the comparison will be more evident. 
+  

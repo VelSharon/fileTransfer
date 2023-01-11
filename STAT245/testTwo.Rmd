@@ -1,0 +1,150 @@
+---
+title: "Stat 245 -- Test 2"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE}
+# load packages that are going to be used
+require(tidyverse)   # this loads mosaic, ggformula, etc. too
+require(ggformula)
+require(mosaic)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw(base_size=12))     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  echo = TRUE,      # for homework, always show R code (this is the default)
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small",   # slightly smaller font for code
+  message = FALSE, warning = FALSE) # don't print warnings or messages in compiled document. So you MUST check them in RStudio!
+```
+
+### Revised Sections 
+I have added revisions under the headers "Revised" 
+
+1. Data Exploration: Graphic 
+
+2. Selection: Explanation
+
+
+### Reading in Data
+
+```{r}
+myDataSet <- read.csv("https://osf.io/jtkn9/download")
+
+nrow(myDataSet)
+```
+
+### Research Question 
+Response variable: indegree which is the size of the researcher’s collaborative network
+Predictor variables: no.of.papers, Gender, n.years
+
+The question then is, is there an association between the size of the researcher's collaborative network (indegree) and number of papers published. Additionally, I would also like to answer if there is evidence of an interaction between gender and number of papers published.  
+
+### Model Plan 
+
+I want to see how the number of papers published, gender, and years of academic career influences the size of the researcher's collaborative network. I have chosen these specific predictors because (1) according to the paper, there were gender differences observed in their study. Therefore, I have also added an interaction between gender and number of papers published because I would like to see how (if) gender influences the number of papers published. (2) I wanted to observe whether the years of a researcher's career progression affects the size of their collaborative network in a way that usually more time spent could lead to well built professional relationships. The number of predictors I have are 3 which is well within the rules of choosing predictors for the size of the given data set, where the number of observations (935) is more than 15 times larger than the number of predictors (3).
+
+
+### Revised
+### Data Exploration 
+```{r}
+gf_point(indegree ~ no.of.papers, color = ~Gender, alpha = 0.4, data = myDataSet, 
+  xlab = 'Number of Papers', 
+  ylab = 'Indegree: Collaborative Network Size')
+```
+
+From this graph, we see that the size of the researcher’s collaborative network is bigger as the number of papers published increases which affirms our research question by showing an association between the response and predictor variables. Additionally, men seem to have the highest number of publications with the biggest indegree value. This also ties in with what the paper said about gender differences in a lot of the variables such as the indegree, number of publications, number of co-authors, etc. We will now attempt to fit a model to further validate the claims made by this graph. 
+
+### Fit & Summary of Model 
+
+```{r}
+require(glmmTMB)
+
+mC1 <- glmmTMB(indegree ~ no.of.papers*Gender + n.years, data = myDataSet,
+family = nbinom1(link = 'log'), na.action = 'na.fail')
+
+mC2 <- glmmTMB(indegree ~ no.of.papers*Gender + n.years, data = myDataSet,
+family = nbinom2(link = 'log'), na.action = 'na.fail')
+
+BIC(mC1, mC2)
+```
+```{r}
+summary(mC2)
+```
+
+To better explain the coefficient estimate 0.017324 of the no.of.papers, this coefficient indicates a 0.017324 increase in indegree for every 1 count of no.of.papers, given that the other predictors n.years and Gender are kept constant. 
+
+### Choice of Model Family 
+I am using Negative Binomial Regression because I have to model the number of papers published which is basically count data. In my model, the response variable was the number of papers published by each researcher, and each researcher in the same experimental setting for the same amount of time, so there was no need to account for effort or time spent in each case. Hence, I did not find it necessary to include an offset in my model. The log link function is used in the negative binomial model here, which exponentiates the predictors. 
+
+I also used BIC to select the best model, out of mC1 and mC2. It turns out that mC2 had the smaller BIC value so I chose it as my model.  
+
+
+### Assessment
+```{r}
+require(DHARMa)
+sim_mC2 <- simulateResiduals(mC2)
+gf_point(sim_mC2$scaledResiduals ~ rank(fitted(mC2))) %>%
+gf_lims(x = c(0,100)) %>%
+gf_labs(x = 'Fitted Values', y = 'Scaled Residuals')
+```
+
+```{r}
+s245::gf_acf(~mC2)
+```
+
+
+From what we can see, there is no evidence of any real trend and it looks like there is pretty uniform spread except for the top area of the plot because it seems sparse. I think this is because of some missing values or less observations. Overall, we can say that this model passes the condition of linearity but we must proceed with caution. 
+
+### Revised 
+## Model Selection 
+```{r}
+library(MuMIn)
+dredge(mC2, rank = 'BIC')
+```
+As we can see, model 16 seems to be the best model with number of years, number of papers, gender and the interaction between Gender and number of papers. It has the lowest BIC value with a delta value of 11.95 between that and the model with the next lowest BIC. Compared to most of the models, the delta value is quite high ranging between 100-1200. So our choices would be models 7, 16 and 8 among which model 16 has the lowest BIC, hence the best choice for us here. 
+
+### Prediction Plot
+
+```{r}
+require(ggeffects) 
+pred_plot_data_1 <- ggpredict(mC2, terms = 'no.of.papers')
+plot(pred_plot_data_1) %>%
+gf_labs(x = 'Number of Papers', y = 'Indegree According to Model')
+```
+
+```{r}
+pred_plot_data_1
+```
+
+From this prediction plot, we can see that that there is an increase in the size of a researcher's collaborative network with increasing number of papers. The predictors held constant were Gender: M and n.years: 26. 
+
+```{r}
+require(ggeffects) 
+pred_plot_data_2 <- ggpredict(mC2, terms = c('no.of.papers', 'Gender'))
+plot(pred_plot_data_2) %>%
+gf_labs(x = 'Number of Papers', y = 'Indegree According to Model') 
+```
+
+```{r}
+pred_plot_data_2
+```
+
+From this prediction plot, we can see that that there is an increase in the size of a researcher's collaborative network with increasing number of papers, but more so for men than for women. The predictor n.years was held constant here with the value 26. 
+
+### Interpretation and Conclusion 
+
+According to everything we have done, it seems that our model seems to answer our research question well enough. Our prediction plots showed an increase in indegree for increase in number of papers. Furthermore, the interaction between Gender and Number of papers also seems to exist since our prediction plot showed an even greater increase in the size of male researchers' collaborative network than female researchers' collaborative network. We had a preliminary evidence of this interaction through our data exploration graph. We are able to decide our predictions are valid because our model passed the condition of linearity as confirmed by the scaled residuals vs fitted plot, which showed no definite trend and had a uniform spread for the most part. Additionally, the choice of this model as being the best one was confirmed by our model selection, BIC where mC2 had the lowest BIC value than that of mC1. Within the model itself, the best model as suggested by dredge was model 16 with number of years, number of papers, Gender as predictors with an interaction between Gender and number of papers. This makes sense since there is evidence that Gender influences the number of papers published from the original paper. Therefore, the model we began with is the best one. If there is one thing that concerns me, it is that there is a greater uncertainty as the number of papers increase according to our prediction plots. Perhaps if more conditions were assessed, the model could be better validated. But overall, I think we are still able to infer from this model the answer for our research question, yes there is an association between the size of a researcher's collaborative network and the number of papers published.

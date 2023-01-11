@@ -1,0 +1,172 @@
+---
+title: "Stat 243 -- GS01"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE, message=FALSE}
+# load packages that are going to be used
+require(mosaic)      # this loads ggformula (for plotting), etc. too
+require(Lock5withR)  # this loads data sets from our book
+
+# Some customization. You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw())     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small")   # slightly smaller font for code
+```
+
+<!-- Put your work below here.  Put text in text chunks, code in R chunks. -->
+
+1.12 AllCountries 
+(a) Quantitative: LandArea, Population, Energy, Rural, Military, Health, HIV, Internet, BirthRate, ElderlyPop, LifeExpectancy, CO2 emissons, GDP, Cell, Electricity
+
+Categorical: Country, Code, Developed, kWhPerCap
+
+(b) 1. What country has the highest population?
+    2. What is the land area of Iceland? 
+    
+(c) 1. Does the population of country influence its energy usage?
+    2. What country has the highest proportion of elderly population?
+
+1.20 
+First Study
+Individual cases: University students in North Carolina
+Variables: Hookah Usage Frequency (0, 1, 2, more than 2) which could be either quantitative or categorical 
+
+Second Study
+Individual cases: People at a Hookah Bar 
+Variables: Length of session (Quantitative), Frequency of puffing (Quantitative), depth of inhalation (Quantitative) 
+
+Third Study
+Individual cases: Samples of hookah smoke
+Variables: Amount of tar (quantitative), amount of nicotine (quantitative), amount of heavy metals (quantitative)
+
+1.22
+(a) Cases: High school classmates of two brothers
+
+(b)Variables: Score1 (Quantitative), Score2 (Quantitative), Good multi-tasker (Y/N)
+
+(c) The number of rows would be 47 and the number of columns would be 3
+
+1.24
+
+Quantitative: The variables in this case would be age (in years) and income (in $). 
+
+Categorical: The variables in this case would be age (in years) and income (in a range of income such as $2000-$5000). 
+
+1.26
+
+The cases could be people earning a steady income. So variables such as, 
+- income, which would help in categorizing who is rich 
+- frequency of happy feelings in a week, maybe a categorical or quantitative variable depending on whether we give them ranges or not.
+
+Section 1.2 
+
+1.50
+I do not think it can be trusted because the number of replies is quite small to create a generalization of proportion of students who support this use of funds. Perhaps if there were more responses, then it could be used to find the proportion. 
+
+1.52
+
+(a) Since there aren't any variables to identify the age of the people, it is hard to tell if they represent adult workers since even teenagers work jobs.The number of people may also affect how a result could be generalized (all people or specific people). 
+
+(b) It may be reasonable if a good amount of responses were available but since we do not know how many replied and how many were actually there, it is hard to generalize the result. 
+
+1.56
+
+(a) Population is professors at university of Nebraska and sample is 94% of professors at the University of Nebraska
+
+(b) Yes since the professors are rating their own performance with input from no other category of people such as students
+
+(c) No because there isn't input from students or even professors rating other professors. 
+
+1.58
+Yes, it could be a representative sample of all US residents since it is random and also a good number of participants were selected. 
+
+1.60
+The most obvious reason I could think of is that a rat's body and human's body are different and that's why a generalization in rats could not be directly applied to that of humans unless there is more data such as similar factors in rats and humans that could lead to weight changes. 
+
+Section 2.1
+
+2.13
+This is a population
+Cases: The soccer games (66000)
+Variable: home field wins by home teams (categorical)
+Relevant statistic: 0.624
+
+2.18
+
+(a) Males
+
+(b) 43/362
+
+(c) 16/43
+
+2.19
+
+(a) 436/616
+
+(b) 181/616
+
+(c) 144/438
+
+(d) 37/178
+
+(e) 144/438 - 37/178 = 0.12
+
+(f) 144/181 = 0.796
+
+2.20 
+
+(a) 20/60
+
+(b) 14/20 
+
+(c) 6/40 
+
+(d) 0/20 
+
+(e) Yes culture appears to be associated with how voices are perceived by people with schizophrenia
+
+Section 2.2
+
+2.55
+
+mean = 24.5
+median = 20
+58 could be an outlier 
+
+2.60 mean = 2.6
+
+2.63
+
+(a) Mean number of cats
+
+(b) Greater than 
+
+Section 2.3
+
+2.82
+
+(a) mean(~Exercise, data=StudentSurvey, na.rm=TRUE)
+
+sd(~Exercise, data=StudentSurvey, na.rm=TRUE )
+
+MEAN = 9.054017
+
+S.D = 5.740741
+
+2.98
+z-score = (243-mean)/s.d = (243-200)/25 = 1.72

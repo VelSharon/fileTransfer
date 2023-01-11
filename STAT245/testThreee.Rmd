@@ -1,0 +1,115 @@
+---
+title: "Stat 245 -- Test 3"
+author: "Sharon Evangeline Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE}
+# load packages that are going to be used
+require(tidyverse)   # this loads mosaic, ggformula, etc. too
+require(ggformula)
+require(mosaic)
+require(glmmTMB)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw(base_size=12))     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  echo = TRUE,      # for homework, always show R code (this is the default)
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small",   # slightly smaller font for code
+  message = FALSE, warning = FALSE) # don't print warnings or messages in compiled document. So you MUST check them in RStudio!
+```
+
+### Reading in Data
+
+```{r}
+myDataSet <- read.csv("https://osf.io/jtkn9/download")
+
+myDataSet <- myDataSet |>
+  arrange(author.name)
+
+head(myDataSet)
+```
+
+### Rationale 
+I chose author.name as my random effect variable since it is a variable of identity. This variable is specific to each author and might affect our response variable, Indegree, which is the size of an author's collaborative network. To account for that dependence, I would like to add it as a random effect variable in my model. 
+
+### Fitting without RE
+```{r}
+mC1 <- glmmTMB(indegree ~ no.of.papers*Gender + n.years, data = myDataSet,
+family = nbinom1(link = 'log'), na.action = 'na.fail')
+
+
+mC2 <- glmmTMB(indegree ~ no.of.papers*Gender + n.years, data = myDataSet,
+family = nbinom2(link = 'log'), na.action = 'na.fail')
+
+BIC(mC1, mC2)
+```
+
+
+### Fitting with RE
+```{r}
+mC1_new <- glmmTMB(indegree ~ no.of.papers*Gender + n.years + (1|author.name), data = myDataSet,
+family = nbinom1(link = 'log'), na.action = 'na.fail')
+
+mC2_new <- glmmTMB(indegree ~ no.of.papers*Gender + n.years + (1|author.name), data = myDataSet,
+family = nbinom2(link = 'log'), na.action = 'na.fail')
+
+BIC(mC1_new, mC2_new)
+```
+
+### Summary
+```{r}
+summary(mC2_new)
+```
+
+The random effect variance estimate is 0.1402 and it explains the variability in the size of an author's collaborative network by the given predictors number of papers, number of years and Gender, across all authors. Since the estimate is closer to 0, it looks like the model partially explains the variance in the collaborative size of authors using the predictors.   
+
+### Assessment without RE
+```{r}
+s245::gf_acf(~mC2)
+```
+
+### Assessment with RE 
+```{r}
+s245::gf_acf(~mC2_new)
+```
+Looking at the ACF plots, it seems that both the models, with RE and without RE meet the condition. There is no ACF value that exceeds the confidence bounds, so from this plot, there is no evidence of non-independence in the residuals. On analyzing closely, the lags for the model with RE seem to be a little longer than that of the model without RE. But the difference is too small and most importantly, all the lags lie within the bounds so adding the random effect variable did not change anything significantly. 
+
+### Predictions 
+```{r}
+require(ggeffects) 
+pred_plot_data_2 <- ggpredict(mC2_new, terms = c('no.of.papers', 'Gender'))
+plot(pred_plot_data_2) %>%
+gf_labs(x = 'Number of Papers', y = 'Indegree According to Model') 
+```
+
+According to the plot, we can see that the there is an increase in the size of a individual author's collaborative network with increasing number of papers, but more so for men than for women. My prediction plot shows average individual type predictions, which does not include random effects variability. I chose this because individual authors have quite different collaborative network sizes. 
+
+### Selection and Conclusion 
+```{r}
+library(MuMIn)
+dredge(mC2_new, rank = 'BIC')
+```
+
+As we can see, model 16 seems to be the best model with number of years, number of papers, gender and the interaction between Gender and number of papers. It has the lowest BIC value with a delta value of 11.82 between that and the model with the next lowest BIC. Compared to most of the models, the delta value is quite high ranging between 100-1200. So our choices would be models 7, 16 and 8 among which model 16 has the lowest BIC, hence the best choice for us here. 
+
+So far it looks like adding the random effects variable has not changed any of the results significantly. In our model assessment, we saw that the conditions were met and our models (both with and without RE) had independent residuals. So, it looks like our model does not require a random effect variable to prove independence of residuals. Additionally, the model with RE variable might still be better since the BIC value without RE was 9052.789 and with RE was 9035.099. It is not a big difference, but it is some improvement. We also saw that the random effects variance estimate was closer to 0 than 1, so adding the RE variable is not significantly making the model better, given the predictors. Our prediction plot based on the random effects model also did not have any visible change. It still predicts a larger indegree size based on more number of papers published, with greater sizes for men than women, without any visible difference from the prediction plot by the model without the RE variable. 
+
+### Extra 
+What are the pros and cons of the style of tests used in this course this fall?
+
+I actually loved this style of testing. I took STAT 243 last semester and the tests were written, closed-book and with strict time limits. It was hard because there were so many practical aspects such as R code that I had to memorize instead of being able to use RStudio. With this testing style, I was able to really understand the test, try different techniques and then go forward with the best version of my solution. Having a week to do this test really helped me understand the concepts even better and I thoroughly enjoyed doing all the tests. The best part for me was having the opportunity to revise the tests because sometimes, I look at my test feedback, remember it for a few days and I forget about it. But revising it just makes it stay in my mind and I learn much better. If you asked me whether this style should be kept or changed in future classes, I would say please keep it! 
+

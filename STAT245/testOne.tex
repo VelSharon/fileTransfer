@@ -1,0 +1,377 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Stat 245 -- Test1},
+  pdfauthor={Sharon Evangeline Velpula},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Stat 245 -- Test1}
+\author{Sharon Evangeline Velpula}
+\date{October 03, 2022}
+
+\begin{document}
+\maketitle
+
+\hypertarget{read-data}{%
+\subsubsection{Read Data}\label{read-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{testDataSet }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"https://sldr.netlify.app/data/TGS.csv"}\NormalTok{)}
+
+\FunctionTok{glimpse}\NormalTok{(testDataSet)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 7,718
+## Columns: 17
+## $ sex                    <chr> "Male", "Male", "Female", "Female", "Male", "Fe~
+## $ glycemic_category      <chr> "NFG/NGT", "Prediabetes", "NFG/NGT", "Diabetes ~
+## $ age                    <dbl> 49, 30, 35, 49, 51, 54, 54, 61, 50, 47, 24, 60,~
+## $ BMI                    <dbl> 26.04199, 28.61370, 29.28387, 27.94651, 28.6855~
+## $ WHR100                 <dbl> 93.49726, 97.39875, 96.47830, 98.44068, 104.190~
+## $ SBP                    <dbl> 142.47107, 105.09143, 102.23056, 148.40855, 111~
+## $ DBP                    <dbl> 98.63075, 61.22617, 72.51951, 94.86163, 85.6991~
+## $ total_cholesterol      <dbl> 4.651738, 3.704098, 4.185202, 5.997344, 4.18423~
+## $ HDLC                   <dbl> 1.1466666, 1.2953406, 0.7488941, 1.3896208, 0.9~
+## $ triglyceride           <dbl> 0.9713975, 3.2888964, 1.0861678, 1.3852274, 1.5~
+## $ smoking                <chr> "Past", "Never", "Current", "Never", "Current",~
+## $ education              <chr> "<6 years", "6-12 years", "6-12 years", "<6 yea~
+## $ low_activity           <chr> "No", "Yes", "No", "No", "Yes", "Yes", "No", "Y~
+## $ CVD_history            <chr> "No", "No", "No", "No", "No", "No", "No", "No",~
+## $ lipid_lowering_meds    <chr> "No", "No", "No", "No", "No", "No", "No", "No",~
+## $ anti_hypertensive_meds <chr> "No", "No", "No", "Yes", "No", "Yes", "No", "No~
+## $ orig.id                <dbl> 460, 2665, 4481, 7032, 2345, 6339, 6773, 2488, ~
+\end{verbatim}
+
+\hypertarget{research-question}{%
+\subsubsection{Research Question}\label{research-question}}
+
+Is there an association between a person's total cholesterol and their
+activity level?
+
+\hypertarget{plan}{%
+\subsubsection{Plan}\label{plan}}
+
+My response variable is total\_cholesterol and low\_activity is one of
+the predictor variables. After reading the paper from which the data has
+been given along with a little background research, I was able to say
+that a person's lifestyle (active, sedentary, etc) could affect what
+goes in that person's body, in our case, the cholesterol levels.
+Furthermore, I have chosen glycemic category, smoking and lipid lowering
+meds to act as predictor variables along with low\_activity. Levels of
+blood glucose, whether a person smokes or not along with whether they
+administer cholesterol medication can affect the cholesterol levels of a
+person. The number of predictors I have are 4 which is well within the
+rules of choosing predictors for the size of the given dataset, where
+the number of observations (7718) is more than 15 times larger than the
+number of predictors (4).
+
+\hypertarget{graphics}{%
+\subsubsection{Graphics}\label{graphics}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{gf\_boxplot}\NormalTok{(total\_cholesterol }\SpecialCharTok{\textasciitilde{}}\NormalTok{ low\_activity, }\AttributeTok{data =}\NormalTok{ testDataSet, }
+  \AttributeTok{xlab =} \StringTok{\textquotesingle{}Low Activity?\textquotesingle{}}\NormalTok{, }
+  \AttributeTok{ylab =} \StringTok{\textquotesingle{}Total Cholesterol\textquotesingle{}}\NormalTok{, }
+  \AttributeTok{title =} \StringTok{"Total Cholesterol by Levels of Physical Activity"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{testOne_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+I have made a boxplot to show any potential association between total
+cholesterol and low\_activity. But as we can see, there is barely any
+difference between those who are less active and those who are not less
+active. This tells me that, for this particular dataset, low/high levels
+of physical activity does not seem to be affecting the cholesterol
+levels of an individual. This leads me to explore the association
+further with other predictors.
+
+\hypertarget{model-fitting}{%
+\subsubsection{Model Fitting}\label{model-fitting}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mlr }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(total\_cholesterol }\SpecialCharTok{\textasciitilde{}}\NormalTok{ low\_activity }\SpecialCharTok{+}\NormalTok{ glycemic\_category }\SpecialCharTok{+}\NormalTok{ smoking }\SpecialCharTok{+}\NormalTok{ lipid\_lowering\_meds, }\AttributeTok{data =}\NormalTok{ testDataSet)}
+
+\FunctionTok{summary}\NormalTok{(mlr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = total_cholesterol ~ low_activity + glycemic_category + 
+##     smoking + lipid_lowering_meds, data = testDataSet)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.9394 -0.6451 -0.0145  0.6352  3.9173 
+## 
+## Coefficients:
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                   5.015951   0.044232 113.402  < 2e-16 ***
+## low_activityYes              -0.019375   0.023473  -0.825  0.40918    
+## glycemic_categoryNFG/NGT     -0.149467   0.032504  -4.598 4.33e-06 ***
+## glycemic_categoryPrediabetes  0.164359   0.035397   4.643 3.49e-06 ***
+## smokingNever                  0.108052   0.034406   3.140  0.00169 ** 
+## smokingPast                  -0.110971   0.047019  -2.360  0.01829 *  
+## lipid_lowering_medsYes        0.005413   0.037726   0.143  0.88592    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.9629 on 7711 degrees of freedom
+## Multiple R-squared:  0.02401,    Adjusted R-squared:  0.02326 
+## F-statistic: 31.62 on 6 and 7711 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+Model Equation: total\_cholesterol = 5.016 + (-0.019)\(I_{lowactivity}\)
++ (-0.149)\(I_{glycemiccategory}\) + (0.108)\(I_{smoking}\) +
+0.005\(I_{lipidmeds}\) + \(\epsilon\)
+
+Where: • \(I_{lowactivity}\) is an indicator variable that is 0 when
+low\_activity is ``no'', and 1 when it is ``yes'' •
+\(I_{glycemiccategory}\) is an indicator variable with value 1 if
+category is ``NFG/NGT'', and 0 otherwise • \(I_{smoking}\) is an
+indicator variable with value 1 if smoking is ``Past'', and 0 otherwise
+• \(I_{lipidmeds}\) is an indicator variable with value 1 if ``yes'',
+and 0 otherwise • \(\epsilon\) ∼ N(0, 0.9629)
+
+The adjusted \(R^2\) value of this model is 0.02326, which means that
+all the predictors combine to explain less than 1\% of the variance in
+total\_cholesterol. In other words, most of the variation in cholesterol
+remains unexplained, leaving a lot of uncertainty in whether activity
+affects cholesterol. This suggests that there must be a weak linear
+relationship between total cholesterol and the predictors, low activity,
+glycemic categories, smoking history and cholesterol medication.
+
+\hypertarget{assessment-residuals-vs-fitted}{%
+\subsubsection{Assessment: Residuals vs
+Fitted}\label{assessment-residuals-vs-fitted}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resDataSet }\OtherTok{\textless{}{-}}\NormalTok{ testDataSet }\SpecialCharTok{|\textgreater{}}
+\FunctionTok{mutate}\NormalTok{(}\AttributeTok{res =} \FunctionTok{resid}\NormalTok{(mlr),}
+\AttributeTok{fitted =} \FunctionTok{predict}\NormalTok{(mlr))}
+\FunctionTok{gf\_point}\NormalTok{(res }\SpecialCharTok{\textasciitilde{}}\NormalTok{ fitted, }\AttributeTok{data =}\NormalTok{ resDataSet) }\SpecialCharTok{|\textgreater{}}
+\FunctionTok{gf\_labs}\NormalTok{(}\AttributeTok{x =} \StringTok{\textquotesingle{}Fitted Values\textquotesingle{}}\NormalTok{, }\AttributeTok{y =} \StringTok{\textquotesingle{}Residuals\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{testOne_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+In a residuals vs fitted plot, we check the linearity of the
+predictor-response variables relationship. In this case, there is no
+clear linear trend, rather the residuals seem to be spread in non-random
+ways which violates the condition of the plot. This leads us to conclude
+that there may not be a linear relationship between the response and
+predictor variables.
+
+\hypertarget{assessment-acf-plot}{%
+\subsubsection{Assessment: ACF Plot}\label{assessment-acf-plot}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{s245}\SpecialCharTok{::}\FunctionTok{gf\_acf}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{mlr)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{testOne_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Here we use an ACF plot to check for independence of residuals. There is
+no ACF value that exceeds the confidence bounds, so from this plot,
+there is no evidence of non-independence in the residuals.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{gf\_histogram}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{res, }\AttributeTok{data =}\NormalTok{ resDataSet)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{testOne_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+Here we check for the normality of residuals. Our histogram has a
+unimodal distribution and follows a normal distribution curve which
+means that most of our fitted values are close to our actual values.
+
+\hypertarget{interpretation}{%
+\subsubsection{Interpretation}\label{interpretation}}
+
+Here I am creating a new prediction data by holding all my predictor
+variables constant except for the low\_activity variable which varies
+between `yes' and `no.' I've chosen the group of individuals with active
+cholesterol medication, having diabetes and with a history of smoking.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fake\_data }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\AttributeTok{lipid\_lowering\_meds =} \StringTok{\textquotesingle{}Yes\textquotesingle{}}\NormalTok{,}
+                         \AttributeTok{glycemic\_category =} \StringTok{\textquotesingle{}Diabetes mellitus\textquotesingle{}}\NormalTok{,}
+                         \AttributeTok{smoking =} \StringTok{\textquotesingle{}Past\textquotesingle{}}\NormalTok{,}
+                         \AttributeTok{low\_activity =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Yes\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}No\textquotesingle{}}\NormalTok{))}
+\NormalTok{preds }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(mlr,}
+                 \AttributeTok{newdata =}\NormalTok{ fake\_data,}
+                 \AttributeTok{se.fit =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{glimpse}\NormalTok{(preds)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 4
+##  $ fit           : Named num [1:2] 4.89 4.91
+##   ..- attr(*, "names")= chr [1:2] "1" "2"
+##  $ se.fit        : Named num [1:2] 0.0513 0.0508
+##   ..- attr(*, "names")= chr [1:2] "1" "2"
+##  $ df            : int 7711
+##  $ residual.scale: num 0.963
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fake\_data }\OtherTok{\textless{}{-}}\NormalTok{ fake\_data }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{pred =}\NormalTok{ preds}\SpecialCharTok{$}\NormalTok{fit,}
+         \AttributeTok{pred.se =}\NormalTok{ preds}\SpecialCharTok{$}\NormalTok{se.fit,}
+         \AttributeTok{CI\_lower =}\NormalTok{ pred }\SpecialCharTok{{-}} \FloatTok{1.96}\SpecialCharTok{*}\NormalTok{pred.se,}
+         \AttributeTok{CI\_upper =}\NormalTok{ pred }\SpecialCharTok{+} \FloatTok{1.96}\SpecialCharTok{*}\NormalTok{pred.se)}
+\FunctionTok{glimpse}\NormalTok{(fake\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 2
+## Columns: 8
+## $ lipid_lowering_meds <fct> Yes, Yes
+## $ glycemic_category   <fct> Diabetes mellitus, Diabetes mellitus
+## $ smoking             <fct> Past, Past
+## $ low_activity        <fct> Yes, No
+## $ pred                <dbl> 4.891018, 4.910393
+## $ pred.se             <dbl> 0.05132198, 0.05083836
+## $ CI_lower            <dbl> 4.790427, 4.810750
+## $ CI_upper            <dbl> 4.991609, 5.010036
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{gf\_point}\NormalTok{(pred }\SpecialCharTok{\textasciitilde{}}\NormalTok{ low\_activity,}
+        \AttributeTok{data =}\NormalTok{ fake\_data) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{gf\_labs}\NormalTok{(}\AttributeTok{x =} \StringTok{\textquotesingle{}Low Activity?\textquotesingle{}}\NormalTok{, }\AttributeTok{y =} \StringTok{\textquotesingle{}Total Cholesterol}\SpecialCharTok{\textbackslash{}n}\StringTok{ According to Model\textquotesingle{}}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{gf\_errorbar}\NormalTok{(CI\_lower }\SpecialCharTok{+}\NormalTok{ CI\_upper }\SpecialCharTok{\textasciitilde{}}\NormalTok{ low\_activity)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{testOne_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+From our prediction plot, we can see that there is an increase in
+cholesterol levels for those who are not less active, there is a wide
+overlap between the two categories of low activity. This suggests that
+there isn't a definite difference between these categories. Furthermore,
+our linearity test failed and our adjusted \(R^2\) value also implied
+that there may be a weak relationship between the response and
+predictor. Therefore, we are now able to arrive to a conclusion that
+levels of physical activity and total cholesterol are not associated,
+given this particular dataset. It seems impossible to apply a linear
+regression model in this case and perhaps, other models should be
+considered.
+
+\end{document}

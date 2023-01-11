@@ -1,0 +1,127 @@
+---
+title: "Stat 245 -- Binary Regression Practice"
+author: "A. Student"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE}
+# load packages that are going to be used
+require(tidyverse)   # this loads mosaic, ggformula, etc. too
+require(ggformula)
+require(mosaic)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw(base_size=12))     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  echo = TRUE,      # for homework, always show R code (this is the default)
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small",   # slightly smaller font for code
+  message = FALSE, warning = FALSE) # don't print warnings or messages in compiled document. So you MUST check them in RStudio!
+```
+
+
+```{r}
+searches <- read_csv('https://sldr.netlify.app/data/election_searches.csv') |>
+  mutate(Race_Ethnicity = str_remove_all(Race_Ethnicity, '_NA'),
+         Race_Ethnicity = str_remove_all(Race_Ethnicity, 'NA_')) |>
+  mutate(Race_Ethnicity = ifelse(grepl(pattern = '_', Race_Ethnicity), 
+                                 'Multiple', 
+                                 Race_Ethnicity)) |>
+  filter(Education != 'Less than 9th grade' & Sex != 'Other')   |> # remove as there are only very few
+  mutate(Income = fct_relevel(Income,
+                              "Under $10,000",
+                              "$10,000 to $14,999",
+                              "$15,000 to $19,999",
+                              "$20,000 to $29,999",
+                              "$30,000 to $39,999",
+                              "$40,000 to $49,999",
+                              "$50,000 to $74,999",
+                              "$75,000 to $99,999",
+                              "$100,000 to $149,999",
+                              "$150,000 and over",
+                              "I prefer not to say"),
+         Education = fct_relevel(Education,
+                                 "9th to 12th grade",
+                                 "High school graduate",
+                                 "Some college or associate degree",
+                                 "Bachelors", 
+                                 "Advanced" ),
+         Post_Choice = factor(Post_Choice),
+         Post_Choice = fct_relevel(Post_Choice, "Tony Abbott", "Julia Gillard"))  
+
+glimpse(searches)
+```
+
+### Model Planning 
+
+Response: Post_Choice 
+Predictors: Searches, Pre_Choice, Trust_Search 
+Interactions: Group * Searches, Group * Pre-Choice, Group * Trust_Search, Group * Party 
+
+### Data Exploration 
+
+### Model Fitting 
+
+```{r}
+search.logr <- glm(factor(Post_Choice) ~ Group * Searches + Pre_Choice + Trust_Search + Party, data = searches, family = binomial(link='logit'))
+
+summary(search.logr)
+```
+
+### Model Assessment 
+
+Linearity?
+
+## Independence of Residuals 
+
+```{r}
+s245::gf_acf(resids(~search.logr))
+```
+
+
+## Mean-Variance 
+
+```{r}
+require(DHARMa)
+search_sim <- simulateResiduals(search.logr)
+
+gf_point(search_sim$scaledResiduals ~ rank(predict(search.logr)),
+         alpha = 0.2) |>
+  gf_labs(x = 'Fitted Values',
+          y = 'Scaled Residuals')
+```
+The residuals are uniformly distributed which is why we can say that the mean-variance relationship condition passes in this case
+
+### Model Selection 
+
+```{r}
+car::Anova(search.logr)
+```
+
+### Interpretation and Prediction Plots 
+
+```{r}
+require(ggeffects)
+pred_plot_data <- ggpredict(search.logr, 
+          terms = 'Party')
+plot(pred_plot_data)
+```
+
+
+
+
+
+
+  

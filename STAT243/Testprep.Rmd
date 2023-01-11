@@ -1,0 +1,157 @@
+---
+title: "Stat 243 -- Test Prep"
+author: "Sharon Velpula"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: 
+  html_document:
+    fig_height: 2.2
+    fig_width: 4
+  pdf_document:
+    fig_height: 2.2
+    fig_width: 4
+  word_document:
+    fig_height: 2.2
+    fig_width: 4
+---
+
+```{r, setup, include = FALSE, message=FALSE}
+# load packages that are going to be used
+require(mosaic)      # this loads ggformula (for plotting), etc. too
+require(Lock5withR)  # this loads data sets from our book
+
+# Some customization. You can alter or delete as desired (if you know what you are doing).
+
+theme_set(theme_bw())     # change theme for ggplot2/ggformula
+
+knitr::opts_chunk$set(
+  tidy = FALSE,     # display code as typed (rather than reformatted)
+  size = "small")   # slightly smaller font for code
+```
+
+PVALUE FOR T-DIST
+
+```{r}
+1-pt(4.5, df = 18) #gives right tailed p-value , 4.5 is the test statistic and df is n-2 so here n is 20. Multiply by 2 if double tailed
+```
+
+
+PVALUE FOR CHISQUARE  
+
+```{r}
+1-pchisq(7.7151, df = 1) #if chi-square dist. df = k-1 but if chi-square test for independence, df = (r-1)(c-1)
+```
+
+
+PVALUE FOR F DIST
+
+```{r}
+pf(3.5, df1 = 1, df2 = 2) #where test statistic is obtained using MSG/MSE, df1 is k-1 for SSG and df2 is n-k for SSE
+```
+
+
+TSTAR COMMAND
+
+```{r}
+qt(0.975, df = 18) #generates tstar value for 95% CI with df = n-2 (n=20)
+```
+
+LM COMMAND
+
+```{r}
+lm(Price ~ PPM, data = InkjetPrinters) #gives coefficients: slope and intercept
+```
+
+SUMMARY(LM()) COMMAND
+
+```{r}
+summary(lm(Price ~ PPM, data = InkjetPrinters)) #gives a regression output 
+```
+
+
+ANOVA OUTPUT
+
+```{r}
+anova(lm(Ants ~ Filling, data = SandwichAnts)) #gives the anova table 
+```
+
+
+TUKEYHSD COMMAND
+
+```{r}
+TukeyHSD(aov(Ants ~ Filling, data = SandwichAnts)) #gives pairwise difference of means from which we decide which category has largest difference (we look for interval in which 0 is not included so Pickles in this case)
+```
+
+LM COMMANDS
+
+```{r}
+lm(Price ~ PPM, data = InkjetPrinters) #gives coefficients: slope and intercept
+```
+
+REVEALING RESIDUALS USING LM()
+
+```{r}
+lm(Price ~ PPM, data = InkjetPrinters)$residuals #reveals hidden variable which is residuals in this case
+```
+
+
+REVEALING COEFFICIENTS USING LM()
+
+```{r}
+lm(Price ~ PPM, data = InkjetPrinters)$coef #reveals simply coefficients 
+```
+CHISQ.TEST()
+
+```{r}
+trueLove <- rbind(
+do(372) * data.frame(sex="Male", attitude="Agree"),
+do(363) * data.frame(sex="Female", attitude="Agree"),
+do(807) * data.frame(sex="Male", attitude="Disagree"),
+do(1005) * data.frame(sex="Female", attitude="Disagree"),
+do(34) * data.frame(sex="Male", attitude="Ambivalent"),
+do(44) * data.frame(sex="Female", attitude="Ambivalent"))
+
+chisq.test(tally(attitude ~ sex, data=trueLove)) # gives chi-square value, df ad p-value using two-way table
+```
+
+
+CHISQ.TEST()$STATISTIC COMMAND 
+
+```{r}
+trueLove <- rbind(
+do(372) * data.frame(sex="Male", attitude="Agree"),
+do(363) * data.frame(sex="Female", attitude="Agree"),
+do(807) * data.frame(sex="Male", attitude="Disagree"),
+do(1005) * data.frame(sex="Female", attitude="Disagree"),
+do(34) * data.frame(sex="Male", attitude="Ambivalent"),
+do(44) * data.frame(sex="Female", attitude="Ambivalent"))
+
+chisq.test(tally(attitude ~ sex, data=trueLove))$statistic # gives only chi-square value
+```
+
+CHISQ.TEST()$EXPECTED COMMAND 
+
+```{r}
+trueLove <- rbind(
+do(372) * data.frame(sex="Male", attitude="Agree"),
+do(363) * data.frame(sex="Female", attitude="Agree"),
+do(807) * data.frame(sex="Male", attitude="Disagree"),
+do(1005) * data.frame(sex="Female", attitude="Disagree"),
+do(34) * data.frame(sex="Male", attitude="Ambivalent"),
+do(44) * data.frame(sex="Female", attitude="Ambivalent"))
+
+chisq.test(tally(attitude ~ sex, data=trueLove))$expected # gives expected values
+```
+
+MAKEFUN COMMAND
+
+```{r}
+lmResult <- lm(Price ~ PPM, data = InkjetPrinters)
+priceEstimatorFunction <- makeFun(lmResult) #makes an estimator function named as priceEstimatorFunction
+
+#Confidence Interval 
+priceEstimatorFunction(PPM = 3.5, interval = "confidence", level = 0.9) #function priceEstimatorFunction can now be used to find 90% confidence interval
+
+#Prediction Interval 
+priceEstimatorFunction(PPM = 3.5, interval = "prediction") #function priceEstimatorFunction can now be used to find 95% confidence interval (default CI)
+```
+
